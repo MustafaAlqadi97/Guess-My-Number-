@@ -1,61 +1,57 @@
 'use strict';
 
-// 1 - Generate a random number between 1 and 100               DONE
-// 2 - take the user input                                      DONE
-// 3 - compare the user input with the generated random number  DONE
-// 4 - if the user input > the GN, print TOO HIGH               DONE
-// 5 - if the user input < The GN, print TOO LOW                DONE
-// 6 - if The User input = the GN, print 🎉 Correct Number!     DONE
-//     and Turn the BGCOLOR to GREEN
-// 7 - SCORE counts the number of Attempts after every userinput and click
-//      it increases by one
-// 8 - HIGHSCORE 
-
+//  Generate a random number between 1 and 100
 let randomNumber = Math.floor(Math.random() * 100) + 1;
-// console.log(randomNumber); TEST
 let score = 5; 
 let check = document.querySelector('.btn.check');
+let message = document.querySelector(".message");
 
 // testing
-console.log(randomNumber);
+// console.log(randomNumber);
 
-check.onclick = function (){
+// Check the user input and the number of attempts
+function checkUserInput () {
     let userInput = (+document.querySelector(".guess").value);
-    if (userInput !== ""){
+    // check if the user input is a valid number between 1 and 100
+    if (userInput !== "" && userInput > 1 && userInput < 100){
+        // decrease the number of attempts
         --score;
+        // display the number of attempts
         document.querySelector(".score").textContent = score;
-        console.log(score); 
+        // if the the user still have attempts
         if (score > 0){
+            // then check the user input if = the generated random number
             if (userInput === randomNumber){
-                console.log("!🎉Correct Answer");
-                document.querySelector(".message").textContent = "!🎉Correct Answer";
+                message.textContent = "!🎉Correct Answer";
                 document.querySelector(".number").textContent = randomNumber;
                 document.body.style.backgroundColor= "green";
+                check.disabled = true; // disable the check button
                 
-            } else if (userInput < randomNumber){
-                console.log("TOO Low");
-                document.querySelector(".message").textContent = "Too Low";
-            }else {
-                console.log("Too High");
-                document.querySelector(".message").textContent = "Too High";
+            } else if (userInput < randomNumber){ // if less than the generated random number
+                message.textContent = "Too Low";
+            }else { // if greater than the generated random number
+                message.textContent = "Too High";
             }
-        } else if (score == 0) {
-            console.log("No answer");
-            check.disabled = true;
+            // if the attempts have finished
+        } else if (score === 0) {
+            check.disabled = true; // disable the check button
             document.querySelector(".message").textContent = "Your attempts are finished 😤Game Over";
-        }else{
-            score = 0;
         }
     } else {
-        document.querySelector(".message").textContent = "No number";
+        document.querySelector(".message").textContent = "Please enter a a number between 1 & 100";
     }
+}
 
-    // again functionality
-    let again = document.querySelector(".again");
-    again.onclick = function(){
-        location.reload();
-    }
+// when the check button is clicked do this function
+check.onclick = function (){
+    checkUserInput();
  // console.log(userInput); TEST
+}
+
+// Reload the page when the user clicks again button
+let again = document.querySelector(".again");
+again.onclick = function(){
+    location.reload();
 }
 
 
